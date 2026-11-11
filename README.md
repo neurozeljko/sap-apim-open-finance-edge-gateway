@@ -56,7 +56,7 @@ The architecture enforces a strict separation of concerns by decoupling perimete
   │   [Integration Process]                                                │
   │   ├── HTTPS Sender Adapter (Role-Based Auth: ESBMessaging.send)        │
   │   ├── Content Modifier (S/4HANA Credit Scoring Core Simulator)         │
-  │   └── Deterministic Financial JSON Payload & Credit Limit Response     │
+  │   └── Deterministic Financial JSON Payload & Limit Response     │
   └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -84,7 +84,7 @@ The architecture enforces a strict separation of concerns by decoupling perimete
 
 All policies adhere strictly to the SAP Integration Suite XSD schema sequence requirements.
 
-### 4.1. Spike Arrest (`SpikeArrest_DDoS_Guard`)
+### 4.1. Spike Arrest (`policies/SpikeArrest_DDoS_Guard.xml`)
 Attached to **ProxyEndpoint ──► PreFlow (Request)**. Eliminates sudden traffic surges at the network edge.
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -95,7 +95,7 @@ Attached to **ProxyEndpoint ──► PreFlow (Request)**. Eliminates sudden tra
 </SpikeArrest>
 ```
 
-### 4.2. Quota Management (`Quota_Monthly_Tiering`)
+### 4.2. Quota Management (`policies/Quota_Monthly_Tiering.xml`)
 Attached to **ProxyEndpoint ──► PreFlow (Request)**. Enforces rolling monthly API consumption limits per consumer IP.
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -107,7 +107,7 @@ Attached to **ProxyEndpoint ──► PreFlow (Request)**. Enforces rolling mont
 </Quota>
 ```
 
-### 4.3. Assign Message (`Assign_Monetization_Headers`)
+### 4.3. Assign Message (`policies/Assign_Monetization_Headers.xml`)
 Attached to **ProxyEndpoint ──► PostFlow (Response)**. Injects financial metering and EU PSD3 compliance headers into the outbound HTTP response.
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -202,7 +202,19 @@ Content-Type: application/json
 .
 ├── README.md                                       # Complete architectural & policy documentation
 ├── sap-apim-edge-proxy-policies-deployed.png       # APIM Edge Proxy deployment & policy flow evidence
-└── sap-apim-open-finance-edge-gateway.png          # SAP CPI backend iFlow runtime deployment evidence
+├── sap-apim-open-finance-edge-gateway.png          # SAP CPI backend iFlow runtime deployment evidence
+├── docs/
+│   ├── adr/
+│   │   └── ADR-025-edge-gateway-monetization.md    # Architectural Decision Record
+│   └── open-finance-psd3-spec.md                   # EU PSD3 & Open Finance API specification
+├── iflow/
+│   └── OpenFinance_CreditScoring_EdgeGateway_v1.json # CPI backend integration metadata & payload
+├── policies/
+│   ├── SpikeArrest_DDoS_Guard.xml                  # PreFlow DDoS & spike arrest XML policy
+│   ├── Quota_Monthly_Tiering.xml                   # PreFlow monthly quota tiering XML policy
+│   └── Assign_Monetization_Headers.xml             # PostFlow PSD3 & billing headers XML policy
+└── tests/
+    └── test-edge-gateway.sh                        # Automated cURL verification script
 ```
 
 ---
@@ -219,4 +231,4 @@ Content-Type: application/json
 
 ---
 
-**Integration Architect:** Željko Popov
+**Lead Integration Architect:** Željko Popov

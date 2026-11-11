@@ -1,0 +1,18 @@
+{
+  "integrationFlow": {
+    "id": "OpenFinance_CreditScoring_EdgeGateway_v1",
+    "runtime": "SAP Cloud Integration (Neo / Cloud Foundry eu10)",
+    "inboundEndpoint": "/http/open-finance/v1/credit-scoring",
+    "authorizationRole": "ESBMessaging.send",
+    "sampleResponse": {
+      "CreditScoreResult": {
+        "borrowerTaxId": "DE-TAX-998810234",
+        "creditRatingScore": 785,
+        "riskClass": "LOW_RISK_TIER_A",
+        "approvalDecision": "AUTOMATICALLY_APPROVED",
+        "maximumApprovedCreditLimitEUR": 25000.00,
+        "s4hanaAssessmentTimestamp": "2026-11-11T23:15:00Z"
+      }
+    }
+  }
+}

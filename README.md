@@ -231,4 +231,4 @@ Content-Type: application/json
 
 ---
 
-**Lead Integration Architect:** Željko Popov
+**Integration Architect:** Željko Popov
